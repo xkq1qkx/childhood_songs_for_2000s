@@ -70,6 +70,14 @@
         <div id="galleryView" class="view-content">
             <div class="gallery-grid" id="galleryGrid"></div>
         </div>
+        <!-- 反馈评论区 -->
+        <div class="feedback-section">
+            <div class="feedback-header">
+                <h2>💭 意见反馈与建议</h2>
+                <p>欢迎分享你的想法、建议或回忆！</p>
+            </div>
+            <div id="feedback-comments"></div>
+        </div>
 
         <footer>
             <p>共 <span id="totalCount">0</span> 首歌曲</p>
@@ -78,5 +86,33 @@
 
     <script src="data.js"></script>
     <script src="app.js"></script>
+    
+    <!-- Giscus评论系统 -->
+    <script>
+        // 主页面反馈评论
+        function loadFeedbackComments() {
+            const script = document.createElement('script');
+            script.src = 'https://giscus.app/client.js';
+            script.setAttribute('data-repo', 'xkq1qkx/childhood_songs_for_2000s'); // 👈 替换这里
+            script.setAttribute('data-repo-id', 'R_kgDOQ6oPAA'); // 👈 替换这里
+            script.setAttribute('data-category', 'General'); // 或你选择的分类
+            script.setAttribute('data-category-id', 'DIC_kwDOQ6oPAM4C1AdC'); // 👈 替换这里
+            script.setAttribute('data-mapping', 'pathname');
+            script.setAttribute('data-strict', '0');
+            script.setAttribute('data-reactions-enabled', '1');
+            script.setAttribute('data-emit-metadata', '0');
+            script.setAttribute('data-input-position', 'top');
+            script.setAttribute('data-theme', 'transparent_dark');
+            script.setAttribute('data-lang', 'zh-CN');
+            script.setAttribute('data-loading', 'lazy');
+            script.crossOrigin = 'anonymous';
+            script.async = true;
+            
+            document.getElementById('feedback-comments').appendChild(script);
+        }
+        
+        // 页面加载时加载主评论区
+        document.addEventListener('DOMContentLoaded', loadFeedbackComments);
+    </script>
 </body>
 </html>

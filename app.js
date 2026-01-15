@@ -206,7 +206,7 @@ function createModal() {
                     </div>
                 </div>
                 <div class="modal-description">
-                    <h3>📝 歌曲介绍</h3>
+                    <h3>歌曲介绍</h3>
                     <p id="modalDescription"></p>
                 </div>
                 <div class="modal-actions">
@@ -214,6 +214,10 @@ function createModal() {
                         <img src="images/bilibili_icon.png" alt="bilibili" class="btn-icon">前往B站观看
                     </a>
                 </div>
+                <div class="modal-comments">
+                    <h3>💬 大家的感想</h3>
+                    <div id="song-comments"></div>
+                </div>                
             </div>
         </div>
     `;
@@ -255,8 +259,36 @@ function showModal(song) {
     
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+    
+    // 加载该歌曲的评论区
+    loadSongComments(song.songName);
 }
 
+// 加载歌曲评论
+function loadSongComments(songName) {
+    const commentsContainer = document.getElementById('song-comments');
+    commentsContainer.innerHTML = ''; // 清空之前的评论
+    
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', 'xkq1qkx/childhood_songs_for_2000s'); // 👈 替换这里
+    script.setAttribute('data-repo-id', 'R_kgDOQ6oPAA'); // 👈 替换这里
+    script.setAttribute('data-category', 'General'); // 或你选择的分类
+    script.setAttribute('data-category-id', 'DIC_kwDOQ6oPAM4C1AdC'); // 👈 替换这里
+    script.setAttribute('data-mapping', 'specific');
+    script.setAttribute('data-term', `歌曲：${songName}`); // 使用歌曲名作为话题
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'top');
+    script.setAttribute('data-theme', 'dark');
+    script.setAttribute('data-lang', 'zh-CN');
+    script.setAttribute('data-loading', 'lazy');
+    script.crossOrigin = 'anonymous';
+    script.async = true;
+    
+    commentsContainer.appendChild(script);
+}
 // 关闭弹窗
 function closeModal() {
     const modal = document.getElementById('songModal');
