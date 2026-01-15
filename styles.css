@@ -1,0 +1,274 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.view-switcher {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.view-btn {
+    padding: 10px 20px;
+    border: 2px solid white;
+    background: transparent;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.view-btn:hover {
+    background: white;
+    color: #667eea;
+}
+
+.view-btn.active {
+    background: white;
+    color: #667eea;
+}
+
+.filters {
+    padding: 20px 30px;
+    display: flex;
+    gap: 15px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    flex-wrap: wrap;
+}
+
+#searchBox {
+    flex: 1;
+    min-width: 250px;
+    padding: 12px 15px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.filters select {
+    padding: 12px 15px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    background: white;
+}
+
+.view-content {
+    display: none;
+    padding: 30px;
+}
+
+.view-content.active {
+    display: block;
+}
+
+/* 表格样式 */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+thead {
+    background: #f8f9fa;
+    position: sticky;
+    top: 0;
+}
+
+th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.impression-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.impression-印象深刻 {
+    background: #ffe0e0;
+    color: #d32f2f;
+}
+
+.impression-有一些印象 {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.impression-基本无印象 {
+    background: #fff9c4;
+    color: #f9a825;
+}
+
+.type-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.type-主题曲 {
+    background: #e8eaf6;
+    color: #3f51b5;
+}
+
+.type-片头曲 {
+    background: #fff9c4;
+    color: #f9a825;
+}
+
+.type-片尾曲 {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.type-插曲 {
+    background: #efebe9;
+    color: #5d4037;
+}
+
+.bilibili-link {
+    color: #00a1d6;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.bilibili-link:hover {
+    text-decoration: underline;
+}
+
+/* 画廊样式 */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.gallery-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.gallery-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1em;
+    font-weight: 600;
+    text-align: center;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-field {
+    margin-bottom: 12px;
+}
+
+.card-label {
+    font-size: 12px;
+    color: #6c757d;
+    margin-bottom: 4px;
+}
+
+.card-value {
+    font-size: 14px;
+    color: #212529;
+}
+
+footer {
+    background: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+    color: #6c757d;
+    border-top: 1px solid #e9ecef;
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8em;
+    }
+    
+    .filters {
+        flex-direction: column;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .table-wrapper {
+        font-size: 14px;
+    }
+    
+    th, td {
+        padding: 10px;
+    }
+}
