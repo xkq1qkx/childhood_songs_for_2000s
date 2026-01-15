@@ -83,7 +83,7 @@ const songsData = [
         "releaseYear": "2004",
         "singer": "毛华锋",
         "type": "主题曲",
-        "bilibiliLink": "https://www.bilibili.com/video/BV1VB4y1X7UC/",
+        "bilibiliLink": "https://www.bilibili.com/video/BV183411b7AH/",
         "cover": "images/迪迦奥特曼.webp",
         "description": "由毛华锋演唱的《迪迦奥特曼》中文主题曲，充满了正能量和希望。'就像阳光穿过黑夜，黎明悄悄划过天边'的歌词深入人心，传递着光明必将战胜黑暗的信念。这首歌激励着无数孩子相信光的力量，成为奥特曼系列在中国最经典的主题曲之一。"
     },

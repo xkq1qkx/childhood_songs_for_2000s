@@ -265,6 +265,7 @@ function showModal(song) {
 }
 
 // 加载歌曲评论
+/*
 function loadSongComments(songName) {
     const commentsContainer = document.getElementById('song-comments');
     commentsContainer.innerHTML = ''; // 清空之前的评论
@@ -289,6 +290,7 @@ function loadSongComments(songName) {
     
     commentsContainer.appendChild(script);
 }
+*/
 // 关闭弹窗
 function closeModal() {
     const modal = document.getElementById('songModal');
