@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderGallery();
     updateCount();
     setupEventListeners();
+    createModal();
 });
 
 // 设置事件监听器
@@ -31,12 +32,10 @@ function setupEventListeners() {
 function switchView(view) {
     currentView = view;
     
-    // 更新按钮状态
     document.querySelectorAll('.view-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.view === view);
     });
     
-    // 更新视图显示
     document.querySelectorAll('.view-content').forEach(content => {
         content.classList.remove('active');
     });
@@ -78,6 +77,7 @@ function renderTable() {
     
     filteredData.forEach(song => {
         const row = document.createElement('tr');
+        row.onclick = () => showModal(song);
         row.innerHTML = `
             <td><strong>${song.songName}</strong></td>
             <td>${song.workName}</td>
@@ -85,7 +85,7 @@ function renderTable() {
             <td>${song.releaseYear}</td>
             <td>${song.singer || '-'}</td>
             <td>${song.type ? `<span class="type-badge type-${song.type}">${song.type}</span>` : '-'}</td>
-            <td><a href="${song.bilibiliLink}" target="_blank" class="bilibili-link">🔗 观看</a></td>
+            <td><a href="${song.bilibiliLink}" target="_blank" class="bilibili-link" onclick="event.stopPropagation()">🔗 观看</a></td>
         `;
         tbody.appendChild(row);
     });
@@ -99,9 +99,10 @@ function renderGallery() {
     filteredData.forEach(song => {
         const card = document.createElement('div');
         card.className = 'gallery-card';
-        card.onclick = () => window.open(song.bilibiliLink, '_blank');
+        card.onclick = () => showModal(song);
         
         card.innerHTML = `
+            <img src="${song.cover}" alt="${song.workName}" class="card-cover" onerror="this.src='${DEFAULT_COVER}'">
             <div class="card-header">
                 ${song.songName}
             </div>
@@ -144,4 +145,96 @@ function renderGallery() {
 // 更新计数
 function updateCount() {
     document.getElementById('totalCount').textContent = filteredData.length;
+}
+
+// 创建弹窗
+function createModal() {
+    const modal = document.createElement('div');
+    modal.id = 'songModal';
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <img id="modalCover" src="" alt="" class="modal-cover">
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info">
+                    <div class="info-item">
+                        <div class="info-label">作品名称</div>
+                        <div class="info-value" id="modalWork"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">发行时间</div>
+                        <div class="info-value" id="modalYear"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">演唱者</div>
+                        <div class="info-value" id="modalSinger"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">类型</div>
+                        <div class="info-value" id="modalType"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">印象程度</div>
+                        <div class="info-value" id="modalImpression"></div>
+                    </div>
+                </div>
+                <div class="modal-description">
+                    <h3>📝 歌曲介绍</h3>
+                    <p id="modalDescription"></p>
+                </div>
+                <div class="modal-actions">
+                    <a id="modalLink" href="" target="_blank" class="btn btn-primary">🎵 前往B站观看</a>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // 点击背景关闭弹窗
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+    
+    // ESC键关闭弹窗
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+}
+
+// 显示弹窗
+function showModal(song) {
+    const modal = document.getElementById('songModal');
+    
+    document.getElementById('modalCover').src = song.cover;
+    document.getElementById('modalTitle').textContent = song.songName;
+    document.getElementById('modalWork').textContent = song.workName;
+    document.getElementById('modalYear').textContent = song.releaseYear;
+    document.getElementById('modalSinger').textContent = song.singer || '未知';
+    
+    const typeSpan = song.type ? `<span class="type-badge type-${song.type}">${song.type}</span>` : '-';
+    document.getElementById('modalType').innerHTML = typeSpan;
+    
+    const impressionSpan = `<span class="impression-badge impression-${song.impression}">${song.impression}</span>`;
+    document.getElementById('modalImpression').innerHTML = impressionSpan;
+    
+    document.getElementById('modalDescription').textContent = song.description;
+    document.getElementById('modalLink').href = song.bilibiliLink;
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// 关闭弹窗
+function closeModal() {
+    const modal = document.getElementById('songModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
 }
