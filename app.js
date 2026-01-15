@@ -210,7 +210,9 @@ function createModal() {
                     <p id="modalDescription"></p>
                 </div>
                 <div class="modal-actions">
-                    <a id="modalLink" href="" target="_blank" class="btn btn-primary">🎵 前往B站观看</a>
+                    <a id="modalLink" href="" target="_blank" class="btn btn-primary">
+                        <img src="images/bilibili_icon.png" alt="bilibili" class="btn-icon">前往B站观看
+                    </a>
                 </div>
             </div>
         </div>
