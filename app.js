@@ -1,5 +1,6 @@
 let currentView = 'table';
 let filteredData = [...songsData];
+let currentSort = 'default';
 
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
@@ -26,6 +27,14 @@ function setupEventListeners() {
     // 筛选器
     document.getElementById('filterImpression').addEventListener('change', filterData);
     document.getElementById('filterType').addEventListener('change', filterData);
+    
+    // 排序
+    document.getElementById('sortBy').addEventListener('change', (e) => {
+        currentSort = e.target.value;
+        sortData();
+        renderTable();
+        renderGallery();
+    });
 }
 
 // 切换视图
@@ -65,9 +74,37 @@ function filterData() {
         return matchSearch && matchImpression && matchType;
     });
     
+    sortData();
     renderTable();
     renderGallery();
     updateCount();
+}
+
+// 排序数据
+function sortData() {
+    switch(currentSort) {
+        case 'year-asc':
+            filteredData.sort((a, b) => a.releaseYear.localeCompare(b.releaseYear));
+            break;
+        case 'year-desc':
+            filteredData.sort((a, b) => b.releaseYear.localeCompare(a.releaseYear));
+            break;
+        case 'name-asc':
+            filteredData.sort((a, b) => a.songName.localeCompare(b.songName, 'zh-CN'));
+            break;
+        case 'name-desc':
+            filteredData.sort((a, b) => b.songName.localeCompare(a.songName, 'zh-CN'));
+            break;
+        case 'work-asc':
+            filteredData.sort((a, b) => a.workName.localeCompare(b.workName, 'zh-CN'));
+            break;
+        case 'work-desc':
+            filteredData.sort((a, b) => b.workName.localeCompare(a.workName, 'zh-CN'));
+            break;
+        default:
+            // 默认排序：按发行时间
+            filteredData.sort((a, b) => a.releaseYear.localeCompare(b.releaseYear));
+    }
 }
 
 // 渲染表格
@@ -121,20 +158,6 @@ function renderGallery() {
                         <span class="impression-badge impression-${song.impression}">${song.impression}</span>
                     </div>
                 </div>
-                ${song.singer ? `
-                <div class="card-field">
-                    <div class="card-label">歌手</div>
-                    <div class="card-value">${song.singer}</div>
-                </div>
-                ` : ''}
-                ${song.type ? `
-                <div class="card-field">
-                    <div class="card-label">类型</div>
-                    <div class="card-value">
-                        <span class="type-badge type-${song.type}">${song.type}</span>
-                    </div>
-                </div>
-                ` : ''}
             </div>
         `;
         

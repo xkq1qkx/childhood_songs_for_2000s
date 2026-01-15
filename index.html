@@ -11,8 +11,8 @@
         <header>
             <h1>🎵 童年影视歌曲</h1>
             <div class="view-switcher">
-                <button class="view-btn active" data-view="table">📊 表格视图</button>
-                <button class="view-btn" data-view="gallery">🖼️ 画廊视图</button>
+                <button class="view-btn active" data-view="table">📊 歌曲表格</button>
+                <button class="view-btn" data-view="gallery">🖼️ 歌曲画廊</button>
             </div>
         </header>
 
@@ -30,6 +30,15 @@
                 <option value="片头曲">片头曲</option>
                 <option value="片尾曲">片尾曲</option>
                 <option value="插曲">插曲</option>
+            </select>
+            <select id="sortBy">
+                <option value="default">默认排序</option>
+                <option value="year-asc">发行时间 ↑</option>
+                <option value="year-desc">发行时间 ↓</option>
+                <option value="name-asc">歌曲名称 A-Z</option>
+                <option value="name-desc">歌曲名称 Z-A</option>
+                <option value="work-asc">作品名称 A-Z</option>
+                <option value="work-desc">作品名称 Z-A</option>
             </select>
         </div>
 

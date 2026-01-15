@@ -128,7 +128,7 @@ const songsData = [
         "singer": "",
         "type": "主题曲",
         "bilibiliLink": "https://www.bilibili.com/video/BV1PM411Z7QK/",
-        "cover": "images/大耳朵图图.webp",
+        "cover": "images/大耳朵图图1.webp",
         "description": "动画《大耳朵图图》的主题曲，展现了幼儿园小朋友图图天真可爱的日常生活。歌曲轻快欢乐，充满了童趣，描绘了一个普通家庭中孩子快乐成长的故事。图图的大耳朵和奇思妙想给无数观众带来了欢乐。"
     },
     {
@@ -172,7 +172,7 @@ const songsData = [
         "singer": "",
         "type": "主题曲",
         "bilibiliLink": "https://www.bilibili.com/video/BV1GU4y1S7VQ/",
-        "cover": "images/大耳朵图图.webp",
+        "cover": "images/大耳朵图图2.webp",
         "description": "《大耳朵图图》的另一首主题曲，幽默风趣地描绘了图图这个'问题小孩'的形象。歌曲展现了孩子成长过程中的调皮捣蛋和天真烂漫，让家长们在会心一笑的同时，也理解了孩子成长的不易。图图的可爱形象深入人心。"
     },
     {
@@ -502,7 +502,7 @@ const songsData = [
         "singer": "",
         "type": "主题曲",
         "bilibiliLink": "https://www.bilibili.com/video/BV1Rx4y1K7mZ/",
-        "cover": "images/铠甲勇士.webp",
+        "cover": "images/铠甲勇士1.webp",
         "description": "特摄剧《铠甲勇士》的主题曲，开创了中国本土特摄的新纪元。'这是光的战役'展现了正义与邪恶的较量，'合体！铠甲勇士！'的变身口号激动人心。这部剧让中国孩子也有了属于自己的超级英雄。"
     },
     {
@@ -733,7 +733,7 @@ const songsData = [
         "singer": "",
         "type": "主题曲",
         "bilibiliLink": "https://www.bilibili.com/video/BV1QT4y1L7mJ/",
-        "cover": "images/神魄.webp",
+        "cover": "images/神魄.jpeg",
         "description": "奇幻动画《神魄》的主题曲，讲述了古代神话世界的战斗故事。'誓约'充满了史诗感和悲壮色彩，展现了守护者们的坚定信念。动画将中国神话元素与现代叙事相结合。"
     },
     {
