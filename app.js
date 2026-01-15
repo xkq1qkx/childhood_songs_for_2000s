@@ -213,11 +213,7 @@ function createModal() {
                     <a id="modalLink" href="" target="_blank" class="btn btn-primary">
                         <img src="images/bilibili_icon.png" alt="bilibili" class="btn-icon">前往B站观看
                     </a>
-                </div>
-                <div class="modal-comments">
-                    <h3>💬 大家的感想</h3>
-                    <div id="song-comments"></div>
-                </div>                
+                </div>               
             </div>
         </div>
     `;
