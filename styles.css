@@ -6,7 +6,7 @@
     --text-main: #ffffff;
     --text-secondary: #9b9b9b;
     --border-color: #333333;
-    --accent-color: #00a1d6; /* Bilibili 蓝 */
+    --accent-color: #00a1d6; /* B站蓝 */
     --tag-red-bg: rgba(255, 100, 100, 0.2);
     --tag-red-text: #ff6b6b;
     --tag-orange-bg: rgba(255, 165, 0, 0.2);
@@ -29,7 +29,7 @@ body {
     padding: 40px;
 }
 
-/* 隐藏背景遮罩，因为我们使用纯色深色背景 */
+/* 移除旧的背景遮罩 */
 body::before { display: none; }
 
 .container {
@@ -40,7 +40,6 @@ body::before { display: none; }
     overflow: visible;
 }
 
-/* 头部样式 */
 header {
     background: transparent;
     padding: 0 0 40px 0;
@@ -52,17 +51,12 @@ header {
 header h1 {
     font-size: 2.5em;
     font-weight: 700;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
 }
 
-/* 视图切换按钮 */
 .view-switcher {
     display: flex;
     gap: 8px;
-    justify-content: flex-start;
+    margin-top: 20px;
 }
 
 .view-btn {
@@ -74,28 +68,19 @@ header h1 {
     cursor: pointer;
     font-size: 14px;
     transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
 }
 
-.view-btn:hover {
+.view-btn:hover, .view-btn.active {
     background: var(--hover-bg);
     color: var(--text-main);
 }
 
-.view-btn.active {
-    background: var(--hover-bg);
-    color: var(--text-main);
-}
-
-/* 筛选器样式 */
 .filters {
-    padding: 0 0 20px 0;
+    padding: 20px 0;
     background: transparent;
     border-bottom: none;
     display: flex;
-    gap: 10px;
+    gap: 12px;
 }
 
 #searchBox, .filters select {
@@ -107,83 +92,45 @@ header h1 {
     outline: none;
 }
 
-#searchBox::placeholder { color: #666; }
-
-/* 画廊视图网格 */
+/* 画廊视图网格 - Notion 风格 */
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 16px;
 }
 
-/* Notion 风格卡片 */
 .gallery-card {
     background: var(--card-bg);
-    border: 1px solid transparent;
-    border-radius: 8px; /* 修改为圆角 */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     overflow: hidden;
-    transition: background 0.2s, transform 0.2s;
+    transition: transform 0.2s, background 0.2s;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .gallery-card:hover {
     background: var(--hover-bg);
     transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
 }
 
 .card-cover {
     width: 100%;
-    height: 140px; /* 调整图片高度 */
+    height: 140px; /* 固定比例的封面图 */
     object-fit: cover;
     border-bottom: 1px solid var(--border-color);
 }
 
 .card-body {
     padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-/* 卡片内标题行 */
-.card-title-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
-}
-
-.card-icon {
-    font-size: 1.2em;
 }
 
 .card-title {
     font-weight: 600;
     font-size: 15px;
-    color: var(--text-main);
+    margin-bottom: 8px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-/* 卡片属性行（去除标签，只留内容） */
-.card-property {
-    font-size: 13px;
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.card-property-icon {
-    font-size: 14px;
-    width: 16px;
-    text-align: center;
 }
 
 /* 标签样式 */
@@ -191,97 +138,59 @@ header h1 {
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 12px;
-    display: inline-block;
 }
-
 .impression-印象深刻 { background: var(--tag-red-bg); color: var(--tag-red-text); }
 .impression-有一些印象 { background: var(--tag-orange-bg); color: var(--tag-orange-text); }
 .impression-基本无印象 { background: var(--tag-gray-bg); color: var(--tag-gray-text); }
 
-/* B站链接样式 */
-.bilibili-text-link {
-    color: var(--text-secondary);
-    text-decoration: underline;
-    font-size: 12px;
-    opacity: 0.7;
-}
-
-/* 弹窗样式 - Notion 风格 */
+/* 弹窗样式 - Notion 风格小窗 */
 .modal {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 .modal-content {
     background: var(--card-bg);
     border-radius: 6px;
-    max-width: 800px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    max-width: 700px;
     border: 1px solid var(--border-color);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 
 .modal-header {
-    position: relative;
-    height: 240px; /* 更高的封面图 */
+    height: 200px; /* 弹窗封面的高度 */
 }
 
 .modal-cover {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 6px 6px 0 0;
 }
 
-.modal-title-area {
-    padding: 0 40px;
-    margin-top: -30px; /* 让图标重叠在封面上 */
-    position: relative;
-    margin-bottom: 20px;
-}
-
-.modal-icon-large {
-    font-size: 4em;
-    display: block;
-    margin-bottom: 10px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-
-.modal-title-text {
-    font-size: 2.2em;
-    font-weight: 700;
-    color: var(--text-main);
+.modal-title {
+    position: static;
+    background: transparent;
+    padding: 20px 40px 10px 40px;
+    font-size: 2em;
 }
 
 .modal-body {
     padding: 10px 40px 40px 40px;
 }
 
-/* 弹窗属性列表 */
-.modal-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0; /* 紧凑布局 */
-    margin-bottom: 30px;
-}
-
 .info-item {
     display: flex;
-    padding: 8px 0;
-    align-items: center;
     background: transparent;
+    padding: 8px 0;
     border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .info-label {
-    width: 140px;
+    width: 120px;
     color: var(--text-secondary);
     font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .info-value {
-    flex: 1;
     color: var(--text-main);
     font-size: 14px;
 }
@@ -289,41 +198,15 @@ header h1 {
 .modal-description {
     border-top: 1px solid var(--border-color);
     padding-top: 20px;
-    margin-top: 20px;
-}
-
-.modal-description h3 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    color: var(--text-main);
 }
 
 .modal-description p {
     color: var(--text-main);
-    line-height: 1.6;
-    opacity: 0.9;
+    opacity: 0.8;
 }
 
-.modal-close {
-    background: rgba(0,0,0,0.5);
-    color: white;
-}
-
-.modal-close:hover {
-    background: rgba(0,0,0,0.8);
-}
-
-/* 表格视图适配深色 */
-table { background: var(--card-bg); color: var(--text-main); }
-thead { background: var(--bg-color); }
+/* 表格适配 */
+table { background: var(--card-bg); border-radius: 8px; color: var(--text-main); }
 th { color: var(--text-secondary); border-bottom: 1px solid var(--border-color); }
 td { border-bottom: 1px solid var(--border-color); }
 tbody tr:hover { background: var(--hover-bg); }
-.bilibili-link { color: var(--accent-color); }
-footer { background: transparent; border-top: 1px solid var(--border-color); }
-
-@media (max-width: 768px) {
-    .modal-title-area, .modal-body { padding: 10px 20px; }
-    .info-label { width: 100px; }
-    body { padding: 15px; }
-}
