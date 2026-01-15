@@ -1,7 +1,7 @@
-/* app.js */
 let currentView = 'table';
 let filteredData = [...songsData];
 
+// 初始化
 document.addEventListener('DOMContentLoaded', () => {
     renderTable();
     renderGallery();
@@ -10,40 +10,88 @@ document.addEventListener('DOMContentLoaded', () => {
     createModal();
 });
 
+// 设置事件监听器
 function setupEventListeners() {
+    // 视图切换
     document.querySelectorAll('.view-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => switchView(e.target.dataset.view));
+        btn.addEventListener('click', (e) => {
+            const view = e.target.dataset.view;
+            switchView(view);
+        });
     });
+
+    // 搜索
     document.getElementById('searchBox').addEventListener('input', filterData);
+    
+    // 筛选器
     document.getElementById('filterImpression').addEventListener('change', filterData);
     document.getElementById('filterType').addEventListener('change', filterData);
 }
 
+// 切换视图
 function switchView(view) {
     currentView = view;
-    document.querySelectorAll('.view-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
-    document.querySelectorAll('.view-content').forEach(content => content.classList.remove('active'));
-    document.getElementById(view === 'table' ? 'tableView' : 'galleryView').classList.add('active');
+    
+    document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === view);
+    });
+    
+    document.querySelectorAll('.view-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    if (view === 'table') {
+        document.getElementById('tableView').classList.add('active');
+    } else {
+        document.getElementById('galleryView').classList.add('active');
+    }
 }
 
+// 筛选数据
 function filterData() {
     const searchText = document.getElementById('searchBox').value.toLowerCase();
     const impressionFilter = document.getElementById('filterImpression').value;
     const typeFilter = document.getElementById('filterType').value;
-
+    
     filteredData = songsData.filter(song => {
-        const matchSearch = song.songName.toLowerCase().includes(searchText) || song.workName.toLowerCase().includes(searchText);
+        const matchSearch = !searchText || 
+            song.songName.toLowerCase().includes(searchText) ||
+            song.workName.toLowerCase().includes(searchText) ||
+            (song.singer && song.singer.toLowerCase().includes(searchText));
+        
         const matchImpression = !impressionFilter || song.impression === impressionFilter;
         const matchType = !typeFilter || song.type === typeFilter;
+        
         return matchSearch && matchImpression && matchType;
     });
-
+    
     renderTable();
     renderGallery();
     updateCount();
 }
 
-// 渲染画廊 - 关键点：使用 song.cover
+// 渲染表格
+function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '';
+    
+    filteredData.forEach(song => {
+        const row = document.createElement('tr');
+        row.onclick = () => showModal(song);
+        row.innerHTML = `
+            <td><strong>${song.songName}</strong></td>
+            <td>${song.workName}</td>
+            <td><span class="impression-badge impression-${song.impression}">${song.impression}</span></td>
+            <td>${song.releaseYear}</td>
+            <td>${song.singer || '-'}</td>
+            <td>${song.type ? `<span class="type-badge type-${song.type}">${song.type}</span>` : '-'}</td>
+            <td><a href="${song.bilibiliLink}" target="_blank" class="bilibili-link" onclick="event.stopPropagation()">🔗 观看</a></td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// 渲染画廊
 function renderGallery() {
     const grid = document.getElementById('galleryGrid');
     grid.innerHTML = '';
@@ -54,87 +102,139 @@ function renderGallery() {
         card.onclick = () => showModal(song);
         
         card.innerHTML = `
-            <img src="${song.cover}" class="card-cover" onerror="this.src='images/背景.jpg'">
+            <img src="${song.cover}" alt="${song.workName}" class="card-cover" onerror="this.src='${DEFAULT_COVER}'">
+            <div class="card-header">
+                ${song.songName}
+            </div>
             <div class="card-body">
-                <div class="card-title">📺 ${song.songName}</div>
-                <div class="card-property">
-                    <span class="impression-badge impression-${song.impression}">${song.impression}</span>
+                <div class="card-field">
+                    <div class="card-label">作品名称</div>
+                    <div class="card-value">${song.workName}</div>
                 </div>
-                <div style="font-size: 12px; color: #666; margin-top: 8px;">🎬 ${song.workName}</div>
+                <div class="card-field">
+                    <div class="card-label">发行时间</div>
+                    <div class="card-value">${song.releaseYear}</div>
+                </div>
+                <div class="card-field">
+                    <div class="card-label">印象程度</div>
+                    <div class="card-value">
+                        <span class="impression-badge impression-${song.impression}">${song.impression}</span>
+                    </div>
+                </div>
+                ${song.singer ? `
+                <div class="card-field">
+                    <div class="card-label">歌手</div>
+                    <div class="card-value">${song.singer}</div>
+                </div>
+                ` : ''}
+                ${song.type ? `
+                <div class="card-field">
+                    <div class="card-label">类型</div>
+                    <div class="card-value">
+                        <span class="type-badge type-${song.type}">${song.type}</span>
+                    </div>
+                </div>
+                ` : ''}
             </div>
         `;
+        
         grid.appendChild(card);
     });
 }
 
-function renderTable() {
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = '';
-    filteredData.forEach(song => {
-        const row = document.createElement('tr');
-        row.onclick = () => showModal(song);
-        row.innerHTML = `
-            <td>📺 <strong>${song.songName}</strong></td>
-            <td>${song.workName}</td>
-            <td><span class="impression-badge impression-${song.impression}">${song.impression}</span></td>
-            <td>${song.releaseYear}</td>
-            <td>${song.singer || '-'}</td>
-            <td>${song.type || '-'}</td>
-            <td><a href="${song.bilibiliLink}" target="_blank" class="bilibili-link" onclick="event.stopPropagation()">🔗</a></td>
-        `;
-        tbody.appendChild(row);
-    });
+// 更新计数
+function updateCount() {
+    document.getElementById('totalCount').textContent = filteredData.length;
 }
 
-function showModal(song) {
-    const modal = document.getElementById('songModal');
-    document.getElementById('modalCover').src = song.cover;
-    document.getElementById('modalTitle').textContent = song.songName;
-    document.getElementById('modalWork').textContent = song.workName;
-    document.getElementById('modalYear').textContent = song.releaseYear;
-    document.getElementById('modalSinger').textContent = song.singer || '未知';
-    document.getElementById('modalImpression').innerHTML = `<span class="impression-badge impression-${song.impression}">${song.impression}</span>`;
-    document.getElementById('modalDescription').textContent = song.description || '暂无简介';
-    document.getElementById('modalLink').href = song.bilibiliLink;
-    
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
+// 创建弹窗
 function createModal() {
-    if (document.getElementById('songModal')) return;
     const modal = document.createElement('div');
     modal.id = 'songModal';
     modal.className = 'modal';
     modal.innerHTML = `
         <div class="modal-content">
             <div class="modal-header">
-                <img id="modalCover" src="" class="modal-cover">
+                <img id="modalCover" src="" alt="" class="modal-cover">
+                <h2 class="modal-title" id="modalTitle"></h2>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
-            <h1 class="modal-title" id="modalTitle"></h1>
             <div class="modal-body">
                 <div class="modal-info">
-                    <div class="info-item"><div class="info-label">🎬 作品名称</div><div class="info-value" id="modalWork"></div></div>
-                    <div class="info-item"><div class="info-label">📅 发行年份</div><div class="info-value" id="modalYear"></div></div>
-                    <div class="info-item"><div class="info-label">🎤 演唱者</div><div class="info-value" id="modalSinger"></div></div>
-                    <div class="info-item"><div class="info-label">💡 印象程度</div><div class="info-value" id="modalImpression"></div></div>
+                    <div class="info-item">
+                        <div class="info-label">作品名称</div>
+                        <div class="info-value" id="modalWork"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">发行时间</div>
+                        <div class="info-value" id="modalYear"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">演唱者</div>
+                        <div class="info-value" id="modalSinger"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">类型</div>
+                        <div class="info-value" id="modalType"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">印象程度</div>
+                        <div class="info-value" id="modalImpression"></div>
+                    </div>
                 </div>
                 <div class="modal-description">
+                    <h3>📝 歌曲介绍</h3>
                     <p id="modalDescription"></p>
                 </div>
-                <div style="margin-top: 20px;">
-                    <a id="modalLink" href="" target="_blank" style="color: #00a1d6; text-decoration: none;">🔗 在 BiliBili 观看</a>
+                <div class="modal-actions">
+                    <a id="modalLink" href="" target="_blank" class="btn btn-primary">🎵 前往B站观看</a>
                 </div>
             </div>
         </div>
     `;
     document.body.appendChild(modal);
+    
+    // 点击背景关闭弹窗
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+    
+    // ESC键关闭弹窗
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
 }
 
+// 显示弹窗
+function showModal(song) {
+    const modal = document.getElementById('songModal');
+    
+    document.getElementById('modalCover').src = song.cover;
+    document.getElementById('modalTitle').textContent = song.songName;
+    document.getElementById('modalWork').textContent = song.workName;
+    document.getElementById('modalYear').textContent = song.releaseYear;
+    document.getElementById('modalSinger').textContent = song.singer || '未知';
+    
+    const typeSpan = song.type ? `<span class="type-badge type-${song.type}">${song.type}</span>` : '-';
+    document.getElementById('modalType').innerHTML = typeSpan;
+    
+    const impressionSpan = `<span class="impression-badge impression-${song.impression}">${song.impression}</span>`;
+    document.getElementById('modalImpression').innerHTML = impressionSpan;
+    
+    document.getElementById('modalDescription').textContent = song.description;
+    document.getElementById('modalLink').href = song.bilibiliLink;
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// 关闭弹窗
 function closeModal() {
-    document.getElementById('songModal').classList.remove('active');
+    const modal = document.getElementById('songModal');
+    modal.classList.remove('active');
     document.body.style.overflow = '';
 }
-
-function updateCount() { document.getElementById('totalCount').textContent = filteredData.length; }
