@@ -537,132 +537,82 @@ footer {
 }
 
 /* 手机端深度优化适配 */
+/* --- 移动端深度优化 --- */
 @media (max-width: 768px) {
-    body {
-        padding: 0; /* 移除背景外边距，增加可用宽度 */
-    }
+    body { padding: 0; }
+    
+    .container { border-radius: 0; }
 
-    .container {
-        border-radius: 0; /* 手机端直角显示更占空间 */
-        box-shadow: none;
-    }
+    header { padding: 15px; }
+    header h1 { font-size: 1.2em; }
 
-    header {
-        padding: 20px 15px; /* 缩小页头高度 */
-    }
-
-    header h1 {
-        font-size: 1.5em; /* 减小标题字体 */
-        margin-bottom: 15px;
-    }
-
-    .view-btn {
-        padding: 8px 15px;
-        font-size: 14px;
-    }
-
-    .filters {
-        padding: 15px;
-        gap: 10px;
-    }
-
-    #searchBox {
-        min-width: 100%; /* 搜索框占满一行 */
-        padding: 10px;
-    }
-
-    .filters select {
-        flex: 1; /* 两个选择框平分一行 */
-        padding: 10px;
-        font-size: 14px;
-    }
-
-    /* --- 表格视图转列表卡片 --- */
-    #tableView {
-        padding: 10px;
-    }
-
-    #songsTable thead {
-        display: none; /* 隐藏表头 */
-    }
-
-    #songsTable, #songsTable tbody, #songsTable tr, #songsTable td {
-        display: block; /* 全部转为块级元素 */
-        width: 100%;
-    }
-
+    /* 1. 移动端列表视图 (真正的一行显示) */
+    #tableView { padding: 0; }
+    
+    table { width: 100%; display: table; } /* 恢复表格布局 */
+    
+    #songsTable thead { display: none; } /* 隐藏表头 */
+    
     #songsTable tr {
-        margin-bottom: 15px;
-        border: 1px solid #e9ecef;
-        border-radius: 8px;
-        background: #fff;
-        padding: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    #songsTable td {
-        padding: 5px 0;
-        border: none;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        font-size: 14px;
+        justify-content: space-between;
+        padding: 12px 15px;
+        border-bottom: 1px solid var(--border-color);
+        background: transparent;
     }
 
-    /* 给特定字段增加标识（可选，需配合 HTML data-label） */
-    #songsTable td:first-child {
-        font-size: 16px;
-        font-weight: bold;
-        color: #667eea;
-        border-bottom: 1px solid #eee;
-        margin-bottom: 8px;
-        padding-bottom: 8px;
+    /* 只显示歌曲名和作品名，保持在同一行 */
+    #songsTable td {
+        display: none; /* 先隐藏所有列 */
+        padding: 0;
+        border: none;
+        background: transparent !important;
     }
 
-    /* --- 画廊视图优化 --- */
-    #galleryView {
-        padding: 15px;
+    /* 第一列(歌曲名)和第二列(作品名)显示 */
+    #songsTable td:nth-child(1) {
+        display: block;
+        flex: 1;
+        font-size: 15px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; /* 超出显示省略号 */
+        color: var(--text-main);
     }
+
+    #songsTable td:nth-child(2) {
+        display: block;
+        flex: 1;
+        font-size: 13px;
+        color: var(--text-secondary);
+        text-align: right;
+        padding-left: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* 2. 移动端画廊视图 (一行一个，高度统一) */
+    #galleryView { padding: 15px; }
 
     .gallery-grid {
-        grid-template-columns: 1fr; /* 强制一行一个卡片 */
-        gap: 20px;
+        grid-template-columns: 1fr; /* 强制一行一个 */
+        gap: 15px;
     }
 
     .gallery-card {
-        max-width: 100%;
-        margin: 0 auto;
+        border-radius: 8px;
+        background: var(--card-bg);
     }
 
-    .card-cover {
-        height: 200px; /* 适当增加手机端卡片封面高度，使其更显眼 */
-    }
-
-    .card-header {
-        font-size: 1.2em;
-        padding: 12px;
-    }
-
-    /* 弹窗手机端优化 */
+    /* 3. 弹窗适配 */
     .modal-content {
-        margin: 0;
         width: 100%;
-        height: 100%;
+        height: 100vh;
         max-height: 100vh;
         border-radius: 0;
-    }
-
-    .modal-cover {
-        height: 250px;
-    }
-
-    .modal-body {
-        padding: 20px;
-    }
-
-    .modal-info {
-        grid-template-columns: 1fr; /* 弹窗信息也改为一行一个 */
-        gap: 10px;
     }
 }
 
